@@ -1,0 +1,42 @@
+﻿@model List<Tag>
+
+<form method="get" asp-action="Index">
+
+    <div class="searching d-flex">
+        <input type="search" placeholder="Enter tag name" class="form-control w-25 rounded m-2" value="@ViewData["gettagnames"]"
+               name="Empsearch"  />
+        <button type="submit"  class="btn btn-success">Search</button>
+    </div>
+</form>
+        
+   
+
+
+
+<table class="table table-dark table-striped table-hover p-0">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Tag Name</th>
+            <th >
+                <a asp-area="Admin" asp-controller="Tag" asp-action="Create" class="text-dark font-weight-bold btn btn-success  w-50">Create</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.TagName</td>
+                <td>
+                    <a href="/admin/tag/Update/@item.Id" class="btn btn-success  btn-outline-primary">Edit</a>
+                    <a href="/admin/tag/delete/@item.Id" class="btn btn-success btn-outline-warning">Delete</a>
+                    <a href="/admin/tag/detail/@item.Id" class="btn btn-success btn-outline-danger">Detail</a>
+                   
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

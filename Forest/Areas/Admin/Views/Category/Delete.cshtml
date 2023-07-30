@@ -1,0 +1,7 @@
+﻿@model Category
+
+<form method="post">
+    <h4 class="alert-info">Are you sure you want to delete this Tag? : <span class="alert-danger">@Model.CategoryName</span></h4>
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    <a href="/admin/category" class="btn btn-info">Cancel</a>
+</form>

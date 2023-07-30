@@ -1,0 +1,45 @@
+﻿@model List<Microsoft.AspNetCore.Identity.IdentityRole> 
+@{int counter=0;}
+
+<form method="get" asp-action="Index">
+
+    <div class="searching d-flex">
+        <input type="search" placeholder="Enter role name" class="form-control w-25 rounded m-2" value="@ViewData["getrolenames"]"
+               name="Empsearch" />
+        <button type="submit" class="btn btn-success">Search</button>
+    </div>
+
+
+
+</form>
+
+<table class="table table-dark table-striped table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+            <th>Role</th>
+            <th>
+                <a href="/admin/role/create" class="text-dark font-weight-bold btn btn-success  w-50">Create</a>
+            </th>
+            
+            </tr>
+        </thead>
+
+        <tbody>
+
+        @foreach (var item in Model)
+            
+        {
+            counter++;
+
+            <tr>
+                <td>@counter</td>
+                <td>@item.Name</td>
+            </tr>
+        }
+
+
+
+        </tbody>
+
+    </table>

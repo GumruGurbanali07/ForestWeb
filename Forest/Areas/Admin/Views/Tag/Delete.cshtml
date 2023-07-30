@@ -1,0 +1,6 @@
+﻿@model Tag 
+<form method="post">
+    <p>Are you sure to delete this tag: @Model.TagName</p>
+    <input type="submit" value="Delete" class="btn btn-danger btn-block w-100" />
+    <a href="/admin/tag" class="btn btn-danger btn-block w-100">Return</a>
+</form>

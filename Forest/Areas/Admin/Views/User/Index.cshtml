@@ -1,0 +1,42 @@
+﻿@model IEnumerable<User> 
+@inject Microsoft.AspNetCore.Identity.UserManager<User> _userManager
+
+   <table class="table table-dark table-striped table-hover">
+       <thead>
+           <tr>
+             
+               <th>User email</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Roles</th>
+            <th>#</th>
+           </tr>
+       </thead>
+       <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Email</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                
+                <td>
+                        @{
+                            var roles = await _userManager.GetRolesAsync(item);
+                            foreach (var role in roles)
+                            {
+                            <span>@role /</span>
+                            }
+                        }
+                </td>
+                <td>
+                    <a href="/admin/user/addrole/@item.Id" class="btn btn-info btn-outline-primary">Add Role</a>
+
+                    <a asp-area="Admin" asp-controller="User" asp-action="Edit" asp-route-userid="@item.Id" class="btn btn-info btn-outline-success">Edit</a>
+
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+   </table>
