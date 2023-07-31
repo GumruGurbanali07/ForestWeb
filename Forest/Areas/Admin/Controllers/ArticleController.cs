@@ -62,21 +62,22 @@ namespace Forest.Areas.Admin.Controllers
         {
             try
             {
+                var categories = await _context.Category.ToListAsync();
+                var tags = await _context.Tags.ToListAsync();
+                ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
+                ViewData["Tags"] = tags;
+
+
                 var userId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 article.UserId = userId;
                 article.CreatedDate = DateTime.Now;
                 article.SeoUrl = article.Title.ReplaceInvalidChars();
 
-                //var path = "/uploads/" + Guid.NewGuid() + Photo.FileName;
-                //using FileStream filestream = new(_env.WebRootPath + path, FileMode.Create);
-                //await Photo.CopyToAsync(filestream);
+           
 
                 article.PhotoUrl = await Photo.SaveFileAsync(_env.WebRootPath);
 
-                var categories = await _context.Category.ToListAsync();
-                var tags = await _context.Tags.ToListAsync();
-                ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
-                ViewData["Tags"] = tags;
+               
 
                 await _context.Articles.AddAsync(article);
                 await _context.SaveChangesAsync();

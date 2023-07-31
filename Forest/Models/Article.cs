@@ -1,4 +1,5 @@
 ﻿using Forest.Models;
+using Microsoft.Build.Framework;
 using System.ComponentModel;
 
 namespace Forest.Models
@@ -19,6 +20,7 @@ namespace Forest.Models
         public string PhotoUrl { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        [Required]
         public List<ArticleTag> ArticleTag { get; set; }
 
 
