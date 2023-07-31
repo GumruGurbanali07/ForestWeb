@@ -4,6 +4,7 @@ using Forest.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Claims;
 
 namespace Forest.Areas.Admin.Controllers
@@ -35,6 +36,19 @@ namespace Forest.Areas.Admin.Controllers
                 .Include(x => x.Category).ToList();
             return View(articles);
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> Index(string Empsearch)
+        //{
+        //    ViewData["Getarticlenames"] = Empsearch;
+        //    var empquery = from x in _context.Articles select x;
+        //    if (!String.IsNullOrEmpty(Empsearch))
+        //    {
+        //        empquery = empquery.Where(x => x.ArticleTag.Contains(Empsearch));
+        //    }
+        //    return View(await empquery.AsNoTracking().ToListAsync());
+        //}
+
         public async Task<IActionResult> Create(List<int> tagIds, IFormFile Photo)
         {
             var categories = _context.Category.ToList();
