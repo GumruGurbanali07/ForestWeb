@@ -1,7 +1,9 @@
-﻿using Forest.Data;
+﻿using Forest.Areas.Admin.Models.Articles;
+using Forest.Data;
 using Forest.Helper;
 using Forest.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -37,70 +39,67 @@ namespace Forest.Areas.Admin.Controllers
             return View(articles);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Index(string Empsearch)
-        //{
-        //    ViewData["Getarticlenames"] = Empsearch;
-        //    var empquery = from x in _context.Articles select x;
-        //    if (!String.IsNullOrEmpty(Empsearch))
-        //    {
-        //        empquery = empquery.Where(x => x.ArticleTag.Contains(Empsearch));
-        //    }
-        //    return View(await empquery.AsNoTracking().ToListAsync());
-        //}
 
-        public async Task<IActionResult> Create(List<int> tagIds, IFormFile Photo)
+
+
+
+        //public async Task<IActionResult> Create(List<int> tagIds, IFormFile Photo)
+        public IActionResult Create()
         {
-            var categories = _context.Category.ToList();
-            var tags = _context.Tags.ToList();
-            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
-            ViewData["Tags"] = tags;
-            return View();
+            CreateArticleDto m = new();
+            m.Categories = _context.Category.ToList();
+            m.Tags = _context.Tags.ToList();
+            return View(m);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Article article, List<int> tagIds, IFormFile Photo)
+        public async Task<IActionResult> Create(CreateArticleDto m)
         {
+            m.Categories = _context.Category.ToList();
+            m.Tags = _context.Tags.ToList();
             try
             {
-                var categories = await _context.Category.ToListAsync();
-                var tags = await _context.Tags.ToListAsync();
-                ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
-                ViewData["Tags"] = tags;
+                if(m.Photo == null)
+                {
+                    ModelState.AddModelError("Photo", "Shekil error");
+                    return View(m);
+                }
 
+                if (m.tagIds == null)
+                {
+                    ModelState.AddModelError("tagIds", "tagIds error");
+                    return View(m);
+                }
 
                 var userId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                article.UserId = userId;
-                article.CreatedDate = DateTime.Now;
-                article.SeoUrl = article.Title.ReplaceInvalidChars();
+                m.article.UserId = userId;
+                m.article.CreatedDate = DateTime.Now;
+                m.article.SeoUrl = m.article.Title.ReplaceInvalidChars();
 
-           
 
-                article.PhotoUrl = await Photo.SaveFileAsync(_env.WebRootPath);
 
-               
+                m.article.PhotoUrl = await m.Photo.SaveFileAsync(_env.WebRootPath);
 
-                await _context.Articles.AddAsync(article);
+
+
+                await _context.Articles.AddAsync(m.article);
                 await _context.SaveChangesAsync();
 
-                List<ArticleTag> articleTags = new();
-
-                for (int i = 0; i < tagIds.Count; i++)
+                foreach (var item in m.tagIds)
                 {
-                    ArticleTag articleTag = new()
+                    _context.ArticleTags.Add(new ArticleTag
                     {
-                        ArticleId = article.Id,
-                        TagId = tagIds[i],
-                    };
-                    articleTags.Add(articleTag);
+                        ArticleId = m.article.Id,
+                        TagId = item,
+                    });
                 }
-                await _context.ArticleTags.AddRangeAsync(articleTags);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 ViewBag.ErrorMessage = ex.Message;
-                return View();
+                return View(m);
             }
         }
         public IActionResult Edit(int id)
@@ -119,9 +118,13 @@ namespace Forest.Areas.Admin.Controllers
         {
             try
             {
+
+
+
+
                 article.UpdatedDate = DateTime.Now;
                 article.SeoUrl = SeoUrl.ReplaceInvalidChars(article.Title);
-                
+
 
                 if (Photo != null)
                 {
@@ -156,16 +159,11 @@ namespace Forest.Areas.Admin.Controllers
             return View();
         }
 
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    if (id == null) return NotFound();
 
-        //    if (article == null) return NotFound();
-        //    return View();
-        //}
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+
             var article = await _context.Articles.FirstOrDefaultAsync(x => x.Id == id);
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();

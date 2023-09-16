@@ -20,7 +20,7 @@ namespace Forest.ViewComponents
         {
             var userId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user=await _userManager.FindByIdAsync(userId);
-            return View("Auth", user);
+            return View("AdminAuth", user);
         }
 
     }

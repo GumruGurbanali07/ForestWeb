@@ -19,8 +19,7 @@ namespace Forest.Models
         public string SeoUrl { get; set; }
         public string PhotoUrl { get; set; }
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
-        [Required]
+        public Category Category { get; set; } 
         public List<ArticleTag> ArticleTag { get; set; }
 
 

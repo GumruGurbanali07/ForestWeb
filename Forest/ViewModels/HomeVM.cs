@@ -9,5 +9,6 @@ namespace Forest.ViewModels
         public List<Article> AllSlot { get; set;}
 
         public List<KeyValuePair<string, int>> PopularCategories { get; set; }
+        public string q { get; set; }
     }
 }

@@ -42,14 +42,14 @@
                 }
             }
         </select>
-      @*  @Html.LabelFor(x => x.IsDeleted)
-        @Html.CheckBoxFor(x => x.IsDeleted)*@
+        @Html.LabelFor(x => x.IsDeleted)
+        @Html.CheckBoxFor(x => x.IsDeleted)
 
-      @*  @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("Editor"))
+       @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("Editor"))
         {
             @Html.LabelFor(x => x.IsActive)
             @Html.CheckBoxFor(x => x.IsActive)
-        }*@
+        }
 
     </div>
     <input type="submit" class="btn btn-success" value="Update" />

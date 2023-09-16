@@ -48,15 +48,20 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
-      name: "areas",
-      //admin yazanda birbasa dashboard sehifesine gelsin 
-      pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}/{seoUrl?}"
+        name: "areas",
+        pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}/{seoUrl?}"
+    );
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}/{seoUrl?}"
     );
 });
-
 
 app.MapControllerRoute(
     name: "default",

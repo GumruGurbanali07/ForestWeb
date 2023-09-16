@@ -21,17 +21,17 @@ namespace Forest.Areas.Admin.Controllers
             var roles = _roleManager.Roles.ToList();
             return View(roles);
         }
-        [HttpGet]
-        public async Task<IActionResult> Index(string Empsearch)
-        {
-            ViewData["Gettagnames"] = Empsearch;
-            var empquery = from x in _roleManager.Roles select x;
-            if (!String.IsNullOrEmpty(Empsearch))
-            {
-                empquery = empquery.Where(x => x.Name.Contains(Empsearch));
-            }
-            return View(await empquery.AsNoTracking().ToListAsync());
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Index(string Empsearch)
+        //{
+        //    ViewData["Gettagnames"] = Empsearch;
+        //    var empquery = from x in _roleManager.Roles select x;
+        //    if (!String.IsNullOrEmpty(Empsearch))
+        //    {
+        //        empquery = empquery.Where(x => x.Name.Contains(Empsearch));
+        //    }
+        //    return View(await empquery.AsNoTracking().ToListAsync());
+        //}
         public IActionResult Create()
         {
             return View();

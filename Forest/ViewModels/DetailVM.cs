@@ -10,5 +10,6 @@ namespace Forest.ViewModels
         public List<Article> SimilarArticle { get; set; }
         public List<Article> PopularArticle { get; set; }
         public List<ArticleComment> ArticleComments { get; set; }
+        public List<KeyValuePair<string, int>> PopularCategories { get; set; }
     }
 }

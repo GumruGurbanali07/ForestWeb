@@ -1,4 +1,6 @@
 ﻿@model Forest.Models.User
+
+
 <div class="pagetitle">
     <h1>Profile</h1>
     <nav>
@@ -26,7 +28,7 @@
             </div>
         </div>
 
-<div class="col-xl-8">
+        <div class="col-xl-8">
             <div class="card">
                 <div class="card-body pt-3">
                     <!-- Bordered Tabs -->
@@ -52,13 +54,12 @@
                                 <div class="col-lg-3 col-md-4 label">Full Name</div>
                                 <div class="col-lg-9 col-md-8">@Model.FirstName @Model.LastName</div>
                             </div>
-
+                            f
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 label">Email</div>
                                 <div class="col-lg-9 col-md-8">@Model.Email</div>
                             </div>
                         </div>
-
                         <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
                             <!-- Profile Edit Form -->
                             <form asp-controller="Profile" asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
@@ -67,11 +68,12 @@
                                     <div class="col-md-8 col-lg-9">
                                         <img src="@Model.PhotoUrl" alt="Profile">
                                         <div class="pt-2">
-                                            <input type="file" name="Photo" >
+                                            <input type="file" accept="image/*" name="Photo">
                                             <button type="submit" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i> Upload</button>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row mb-3">
                                     <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                     <div class="col-md-8 col-lg-9">
@@ -134,7 +136,6 @@
                                     <button type="submit" class="btn btn-primary">Change Password</button>
                                 </div>
                             </form><!-- End Change Password Form -->
-
                         </div>
                     </div><!-- End Bordered Tabs -->
                 </div>
@@ -142,3 +143,14 @@
         </div>
     </div>
 </section>
+
+@section Scripts{
+    <!-- Page level plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-fHY2UiQlipUq0dEabSM4s+phmn+bcxSYzXP4vAXItBvBHU7zAM/mkhCZjtBEIJexhOMzZbgFlPLuErlJF2b+0g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+     
+
+   
+    </script>
+}

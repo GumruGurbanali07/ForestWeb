@@ -1,0 +1,15 @@
+﻿@model ArticleComment
+@{
+    ViewData["Title"] = "Add Comment";
+}
+
+<h2>Add Comment</h2>
+
+<form asp-action="AddComment">
+    <div class="form-group">
+        <label asp-for="Comment"></label>
+        <textarea asp-for="Comment" class="form-control"></textarea>
+    </div>
+    <input type="hidden" asp-for="ArticleId" value="@ViewData["articleId"]" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

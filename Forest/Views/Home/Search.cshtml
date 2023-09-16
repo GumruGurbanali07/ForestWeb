@@ -1,0 +1,220 @@
+﻿@model HomeVM
+@{
+    int counter = 1;
+    Pager pager = new();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+
+}
+
+
+<section class="section first-section">
+    <div class="container-fluid">
+        <div class="masonry-blog clearfix">
+            <div class="left-side">
+                <div class="masonry-box post-media">
+
+                    <img src="@Model.FirstSlot.PhotoUrl" alt="" class="img-fluid">
+
+
+
+                    <div class="shadoweffect">
+                        <div class="shadow-desc">
+                            <div class="blog-meta">
+                                <span class="bg-aqua"><a href="/home/detail/@Model.FirstSlot.Id" title="">@Model.FirstSlot.Category.CategoryName</a></span>
+                                <h4><a href="/home/Detail/@Model.FirstSlot.Id/@Model.FirstSlot.SeoUrl/" title="">@Model.FirstSlot.Title</a></h4>
+                                <small><a href="/home/Detail/@Model.FirstSlot.Id/" title="">@Model.FirstSlot.CreatedDate.ToString("dd MMMM, yyyy")</a></small>
+
+                                <small><a href="/home/detail/@Model.FirstSlot.Id" title="">by @Model.FirstSlot.User.FirstName</a></small>
+                            </div><!-- end meta -->
+                        </div><!-- end shadow-desc -->
+                    </div><!-- end shadow -->
+                </div><!-- end post-media -->
+            </div><!-- end left-side -->
+            @foreach (var item in Model.Articles.Skip(1).Take(2))
+            {
+
+
+                <div class="center-side">
+                    <div class="masonry-box post-media">
+                        <img src="@item.PhotoUrl" class="img-fluid">
+                        <div class="shadoweffect">
+                            <div class="shadow-desc">
+                                <div class="blog-meta">
+                                    <span class="bg-aqua"><a href="blog-category-01.html" title="">@item.Category.CategoryName</a></span>
+                                    <h4><a href="/home/Detail/@item.Id/@item.SeoUrl/" title="">@item.Title</a></h4>
+                                    <small><a href="garden-single.html" title="">@item.CreatedDate.ToString("dd MMMM, yyyy")</a></small>
+                                    <small><a href="#" title="">by @item.User.FirstName</a></small>
+                                </div><!-- end meta -->
+                            </div><!-- end shadow-desc -->
+                        </div><!-- end shadow -->
+                    </div><!-- end post-media -->
+                </div>
+            }
+
+        </div><!-- end masonry -->
+    </div>
+</section>
+<section class="section wb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <div class="page-wrapper">
+                    <div class="blog-top clearfix">
+                        <h4 class="pull-left">Recent News <a href="#"><i class="fa fa-rss"></i></a></h4>
+                    </div><!-- end blog-top -->
+
+                    <div class="blog-list clearfix">
+                        @foreach (var item in Model.Articles.Skip(3))
+                        {
+                            counter += 1;
+
+                            <div class="blog-box row">
+                                <div class="col-md-4">
+                                    <div class="post-media">
+                                        <a href="garden-single.html" title="">
+                                            <img src="@item.PhotoUrl" alt="" class="img-fluid">
+                                            <div class="hovereffect"></div>
+                                        </a>
+                                    </div><!-- end media -->
+                                </div><!-- end col -->
+
+
+
+                                <div class="blog-meta big-meta col-md-8">
+                                    <span class="bg-aqua"><a href="garden-category.html" title="">@item.Category.CategoryName</a></span>
+                                    <h4><a href="/home/detail/@item.Id/@item.SeoUrl/" title="">@item.Title</a></h4>
+                                    <p>@Html.Raw(item.Content.Length > 50 ? item.Content.Substring(0, 50) : item.Content)...</p>
+                                    <small><a href="garden-category.html" title=""><i class="fa fa-eye"></i> @item.ViewCount</a></small>
+                                    <small><a href="garden-single.html" title="">@item.CreatedDate.ToString("dd MMMM, yyyy")</a></small>
+                                    <small><a href="#" title="">by @item.User.FirstName</a></small>
+                                </div><!-- end meta -->
+                            </div>
+                            <hr class="invis">
+
+
+                            <!-- end blog-box -->
+                            @if (counter % 3 == 1)
+                            {
+
+                                <div class="row">
+                                    <div class="col-lg-10 offset-lg-1">
+                                        <div class="banner-spot clearfix">
+                                            <div class="banner-img">
+                                                <img src="upload/banner_05.jpg" alt="" class="img-fluid">
+                                            </div><!-- end banner-img -->
+                                        </div><!-- end banner -->
+                                    </div><!-- end col -->
+                                </div>
+
+                                <!-- end row -->
+                            }
+                            <hr class="invis">
+
+                        }
+
+
+                    </div><!-- end blog-list -->
+                </div><!-- end page-wrapper -->
+                <hr class="invis">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav aria-label="Page navigation">
+                            @if (pager.TotalPages > 0)
+                            {
+                                <ul class="pagination justify-content-start">
+                                    @if (pager.CurrentPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home"
+                                               asp-action="Index" asp-route-q="@Model.q" asp-route-pg="1">First</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home"
+                                               asp-action="Index" asp-route-q="@Model.q" asp-route-pg="@(pager.CurrentPage-1)">Prev</a>
+                                        </li>
+                                    }
+
+                                    @for (int i = pager.StartPage; i <= pager.EndPage; i++)
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-q="@Model.q" asp-route-pg="@i">@i</a></li>
+                                    }
+
+                                    @if (pager.CurrentPage < pager.TotalPages)
+                                    {
+
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home"
+                                               asp-action="Index" asp-route-q="@Model.q" asp-route-pg="@(pager.CurrentPage +1)">Next</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home"
+                                               asp-action="Index" asp-route-q="@Model.q" asp-route-pg="@(pager.TotalPages)">Last</a>
+                                        </li>
+
+                                    }
+
+                                </ul>
+
+                            }
+                        </nav>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end col -->
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <div class="sidebar">
+                    <div class="widget">
+                        <h2 class="widget-title">Search</h2>
+                        <form class="form-inline search-form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search on the site">
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div><!-- end widget -->
+
+                    <div class="widget">
+                        <h2 class="widget-title">Recent Posts</h2>
+                        <div class="blog-list-widget">
+                            <div class="list-group">
+                                @foreach (var item in Model.Articles.Take(3))
+                                {
+                                    <a href="garden-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        <div class="w-100 justify-content-between">
+                                            <img src="@item.PhotoUrl" alt="" class="img-fluid float-left">
+                                            <h5 class="mb-1">@item.Title</h5>
+                                            <small>@item.CreatedDate.ToString("dd MMMM,yyyy")</small>
+                                        </div>
+                                    </a>
+                                }
+
+
+                            </div>
+                        </div><!-- end blog-list -->
+                    </div><!-- end widget -->
+
+
+
+                    <div class="widget">
+                        <h2 class="widget-title">Popular Categories</h2>
+                        <div class="link-widget">
+                            @foreach (var category in Model.PopularCategories)
+                            {
+                                <ul>
+                                    <li><a href="#">@category.Key <span>(@category.Value)</span></a></li>
+                                </ul>
+                            }
+
+                        </div><!-- end link-widget -->
+                    </div><!-- end widget -->
+
+                </div><!-- end sidebar -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section>

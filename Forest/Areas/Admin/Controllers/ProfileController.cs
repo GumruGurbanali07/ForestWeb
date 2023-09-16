@@ -45,7 +45,7 @@ namespace ForestAppUI.Controllers
                 var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 User user = await _userManager.FindByIdAsync(userId);
 
-                var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "/uploads/");
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
@@ -70,22 +70,41 @@ namespace ForestAppUI.Controllers
                     var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                     User user = await _userManager.FindByIdAsync(userId);
 
+                    // Geçici bir kopya oluştur
+                    User tempUser = new User
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        AboutAuthor = user.AboutAuthor,
+                        Email = user.Email
+                    };
+
+                    // Yeni bilgileri güncelle
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
                     user.AboutAuthor = model.AboutAuthor;
                     user.Email = model.Email;
 
-                    var result = await _userManager.UpdateAsync(user);
+                    // Veritabanına güncelleme işlemi
+                    var updateResult = await _userManager.UpdateAsync(user);
 
-                    if (result.Succeeded)
+                    if (updateResult.Succeeded)
                     {
-                        await _context.SaveChangesAsync();
+                        // Geçici kopyayı gerçek veritabanına kaydet
+                        var saveTempResult = await _userManager.UpdateAsync(tempUser);
 
+                        if (!saveTempResult.Succeeded)
+                        {
+                            // Geçici kopyayı kaydetme işlemi başarısız oldu
+                            // Hata işleme kodu buraya eklenmeli
+                        }
+
+                        // Başarılı güncelleme durumunda, ilgili sayfaya yönlendir
                         return RedirectToAction("Index");
                     }
                     else
                     {
-                        foreach (var error in result.Errors)
+                        foreach (var error in updateResult.Errors)
                         {
                             ModelState.AddModelError("", error.Description);
                         }
@@ -93,12 +112,14 @@ namespace ForestAppUI.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Error", "An error occurred while updating the profile.");
+                    ModelState.AddModelError("Error", "Profil güncellenirken bir hata oluştu.");
                 }
             }
 
+            // Hata durumunda veya başarısızlık durumunda, aynı sayfaya model ile dön
             return View("Index", model);
         }
+
         [HttpPost]
         public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string renewPassword)
         {

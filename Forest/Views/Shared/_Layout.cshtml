@@ -29,7 +29,7 @@
     <link href="~/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="style.css" rel="stylesheet">
+<link href="~/style.css" rel="stylesheet">
 
 <!-- Responsive styles for this template -->
     <link href="~/css/responsive.css" rel="stylesheet">
@@ -51,8 +51,8 @@
         <div class="collapse top-search" id="collapseExample">
             <div class="card card-block">
                 <div class="newsletter-widget text-center">
-                    <form class="form-inline">
-                        <input type="text" class="form-control" placeholder="What you are looking for?">
+                    <form class="form-inline" asp-action="search" asp-controller="home">
+                        <input type="text" name="q" class="form-control" placeholder="What you are looking for?">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                     </form>
                 </div><!-- end newsletter -->
@@ -128,18 +128,9 @@
                             <li class="nav-item">
                                 <a class="nav-link color-green-hover" href="garden-index.html">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Gardening</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Outdoor Living</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Indoor Living</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Shopping Guides</a>
-                            </li>
+
+                            @(await Component.InvokeAsync("Category"))
+
                            @* @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("Creator") || User.IsInRole("Editor"))
                             {*@
                               <li class="nav-item">

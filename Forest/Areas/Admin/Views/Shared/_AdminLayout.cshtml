@@ -15,13 +15,14 @@
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
- 
+    @RenderSection("Link", false)
     <link rel="stylesheet" href="~/admin/css/style.css">
+
 
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/admin/images/favicon.png" />
 
-   @* @RenderSection("Scripts", false)*@
+   
 </head>
 <body>
   
@@ -162,7 +163,7 @@
     <script src="~/admin/js/off-canvas.js"></script>
     <script src="~/admin/js/hoverable-collapse.js"></script>
     <script src="~/admin/js/misc.js"></script>
-    
+    @RenderSection("Scripts", false)
     <!-- endinject -->
     <!-- Custom js for this page -->
     <!-- End custom js for this page -->
